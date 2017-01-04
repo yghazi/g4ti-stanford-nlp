@@ -9,7 +9,10 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 /**
- * Created by yumna on 12/27/16.
+ * @author Yumna Ghazi
+ * @version 1.0
+ * @since 2016-12-27
+ *
  */
 public class ConfigUtil {
 
@@ -18,7 +21,7 @@ public class ConfigUtil {
      */
     private Properties nerTrainProperties = null;
 
-    private final String NER_TRAIN_PROPS_PATH = "config/ner-train.prop";
+    private final String NER_TRAIN_PROPS_PATH = System.getProperty("user.dir")+"/config/ner-train.prop";
 
     private long syncHours = 1;
 
@@ -38,6 +41,7 @@ public class ConfigUtil {
             try (FileInputStream stream = new FileInputStream(file)) {
                 nerTrainProperties.load(stream);
             } catch (IOException ex) {
+                ex.printStackTrace();
                 //TODO: handle it
             }
             // get training path
@@ -70,6 +74,7 @@ public class ConfigUtil {
      * @return
      */
     public String getTrainFileList(String path) {
+
         Path dataPath = Paths.get(path);
         StringBuffer buff = new StringBuffer("");
         DirectoryStream.Filter<Path> filter = (Path p) -> !Files.isDirectory(p) && p.toString().contains(".tsv");
