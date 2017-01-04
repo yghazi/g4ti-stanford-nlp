@@ -1,5 +1,6 @@
-# the only custom property for the trainer
+# the custom properties for the trainer
 trainDataPath = /home/someone/Downloads/ner-training/carbanak-training-data/
+syncHours = 1
 
 #location where you would like to save (serialize to) your
 #classifier; adding .gz at the end automatically gzips the file,

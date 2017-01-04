@@ -1,29 +1,28 @@
 package org.threatnlp.processor;
 
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.pipeline.Annotation;
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.util.CoreMap;
-import edu.stanford.nlp.util.PropertiesUtils;
-
-import java.util.List;
-
+import java.io.IOException;
 
 /**
  * Created by someone on 12/23/16.
  */
 public class Processor {
 
+    static ConfigUtil configUtil = new ConfigUtil();
+
     static NLPSecModelTrainer trainer = new NLPSecModelTrainer();
 
-    static long lastUpdated = 0;
+    static final long syncMillis = configUtil.getSyncHours() * 60 * 60 * 1000;
 
     public static void main(String[] args) {
 
         while (true) {
-            if (lastUpdated == 0 || lastUpdated > System.currentTimeMillis())
                 trainer.generateUpdatedNERModel();
+                try {
+                    Thread.sleep(syncMillis);
+                } catch (InterruptedException ex) {
+                    System.err.println("Error occurred.");
+                }
         }
     }
+
 }

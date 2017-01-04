@@ -20,8 +20,14 @@ public class ConfigUtil {
 
     private final String NER_TRAIN_PROPS_PATH = "config/ner-train.prop";
 
+    private long syncHours = 1;
+
+
+    public long getSyncHours() {
+        return syncHours;
+    }
+
     /**
-     *
      * @return
      */
     public Properties getNERTrainProperties() {
@@ -35,20 +41,23 @@ public class ConfigUtil {
                 //TODO: handle it
             }
             // get training path
-            if (nerTrainProperties.containsKey("trainDataPath")) {
-                String fileList = getTrainFileList(nerTrainProperties.getProperty("trainDataPath"));
-                if (fileList != null) {
-                    nerTrainProperties.put("trainFileList", fileList);
-                    valid = true;
-                }
-                nerTrainProperties.remove("trainDataPath");
+            String tmp = getTrainFileList(nerTrainProperties.getProperty("trainDataPath", null));
+            if (tmp != null) {
+                nerTrainProperties.put("trainFileList", tmp);
+                valid = true;
             }
+            nerTrainProperties.remove("trainDataPath");
 
-            if (!valid) {
-                //TODO: improve message here
-                System.out.println("Invalid properties file.");
-                System.exit(-1);
-            }
+            //get syncHours
+            tmp = nerTrainProperties.getProperty("syncHours", "1");
+            syncHours = Long.parseLong(tmp);
+            nerTrainProperties.remove("syncHours");
+
+                if (!valid) {
+                    //TODO: improve message here
+                    System.out.println("Invalid properties file.");
+                    System.exit(-1);
+                }
         }
         return nerTrainProperties;
     }
@@ -66,12 +75,12 @@ public class ConfigUtil {
         DirectoryStream.Filter<Path> filter = (Path p) -> !Files.isDirectory(p) && p.toString().contains(".tsv");
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dataPath, filter)) {
-            for (Path p: stream) {
+            for (Path p : stream) {
                 buff.append(p.toAbsolutePath()).append(",");
             }
             int i = buff.length();
-            if(i > 0) //delete the last comma
-                buff.deleteCharAt(i-1);
+            if (i > 0) //delete the last comma
+                buff.deleteCharAt(i - 1);
         } catch (IOException ex) {
             //TODO: handle it
             return null;

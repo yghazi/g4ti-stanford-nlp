@@ -12,10 +12,10 @@ import java.util.Properties;
  */
 public class NLPSecModelTrainer {
 
-    private static final Logger log = LoggerFactory.getLogger(NLPSecModelTrainer.class);
-
     ConfigUtil configUtil;
+
     CRFClassifier classifier;
+
     String serializeTo;
 
 
