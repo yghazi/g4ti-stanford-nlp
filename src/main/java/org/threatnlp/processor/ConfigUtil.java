@@ -1,6 +1,10 @@
 package org.threatnlp.processor;
 
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
@@ -15,7 +19,7 @@ import java.util.Properties;
  *
  */
 public class ConfigUtil {
-
+    private final Logger logger = LoggerFactory.getLogger(ConfigUtil.class);
     /**
      * NER training properties
      */
@@ -31,7 +35,7 @@ public class ConfigUtil {
     }
 
     /**
-     * @return
+     * @return Properties
      */
     public Properties getNERTrainProperties() {
         if (nerTrainProperties == null) {
@@ -59,7 +63,7 @@ public class ConfigUtil {
 
                 if (!valid) {
                     //TODO: improve message here
-                    System.out.println("Invalid properties file.");
+                    logger.error("Invalid properties file {} , bye bye ....", NER_TRAIN_PROPS_PATH);
                     System.exit(-1);
                 }
         }
@@ -71,7 +75,7 @@ public class ConfigUtil {
      * Returns a comma-separated list of tsv training files in the given path
      *
      * @param path null if error, empty if no file, else comma-sep paths
-     * @return
+     * @return string
      */
     public String getTrainFileList(String path) {
 
@@ -88,6 +92,7 @@ public class ConfigUtil {
                 buff.deleteCharAt(i - 1);
         } catch (IOException ex) {
             //TODO: handle it
+            logger.error("", ex);
             return null;
         }
 

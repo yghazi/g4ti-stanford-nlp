@@ -5,12 +5,14 @@ import edu.stanford.nlp.util.Timing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
-
 /**
- * Created by someone on 12/31/16.
+ * @author Yumna Ghazi
+ * @version 1.0
+ * @since 2016-12-31
  */
 public class NLPSecModelTrainer {
+
+    final Logger logger = LoggerFactory.getLogger(NLPSecModelTrainer.class);
 
     ConfigUtil configUtil;
 
@@ -29,9 +31,9 @@ public class NLPSecModelTrainer {
         //CoreNLP class for logging timing metrics
         Timing timing = new Timing();
 
-        int knownLCWordsLimit =  classifier.flags.maxAdditionalKnownLCWords;
+        int knownLCWordsLimit = classifier.flags.maxAdditionalKnownLCWords;
         classifier.flags.maxAdditionalKnownLCWords = -1;
-        System.out.println("Known LC words " + knownLCWordsLimit);
+        logger.info("Known LC words {}", knownLCWordsLimit );
         classifier.train();
         classifier.flags.maxAdditionalKnownLCWords = knownLCWordsLimit;
         timing.end("Seems like we're done!");
@@ -40,8 +42,9 @@ public class NLPSecModelTrainer {
         if (serializeTo != null) {
             classifier.serializeClassifier(serializeTo);
         } else {
+
             //TODO might want to change to another default path
-            classifier.serializeClassifier("/opt/");
+            classifier.serializeClassifier("/opt/g4ti/");
         }
 
 

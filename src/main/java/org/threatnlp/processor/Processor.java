@@ -1,11 +1,17 @@
 package org.threatnlp.processor;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Created by someone on 12/23/16.
+ * @author Yumna Ghazi
+ * @version 1.0
+ * @since 2016-12-23
+ *
  */
 public class Processor {
+
+    static final Logger logger = LoggerFactory.getLogger(Processor.class);
 
     static ConfigUtil configUtil = new ConfigUtil();
 
@@ -20,7 +26,7 @@ public class Processor {
                 try {
                     Thread.sleep(syncMillis);
                 } catch (InterruptedException ex) {
-                    System.err.println("Error occurred.");
+                    logger.error("Error occured", ex);
                 }
         }
     }
