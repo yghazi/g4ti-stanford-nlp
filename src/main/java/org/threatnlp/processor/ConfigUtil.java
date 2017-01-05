@@ -84,9 +84,9 @@ public class ConfigUtil {
         DirectoryStream.Filter<Path> filter = (Path p) -> !Files.isDirectory(p) && p.toString().contains(".tsv");
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dataPath, filter)) {
-            for (Path p : stream) {
+            stream.forEach(p -> {
                 buff.append(p.toAbsolutePath()).append(",");
-            }
+            });
             int i = buff.length();
             if (i > 0) //delete the last comma
                 buff.deleteCharAt(i - 1);
