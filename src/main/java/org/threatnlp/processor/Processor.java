@@ -17,18 +17,18 @@ public class Processor {
 
     static NLPSecModelTrainer trainer = new NLPSecModelTrainer();
 
-    static final long syncMillis = configUtil.getSyncHours() * 60 * 60 * 1000;
+    static final long syncMillis = 60000;
+    //configUtil.getSyncHours() * 60 * 60 * 1000;
 
     public static void main(String[] args) {
+//         trainer.generateUpdatedNERModel();
+         trainer.doTagging("/home/anon/nlp-test/APT30.txt");
+//         try {
+//             Thread.sleep(syncMillis);
+//         } catch (InterruptedException ex) {
+//             logger.error("Error occured", ex);
+//         }
 
-        while (true) {
-                trainer.generateUpdatedNERModel();
-                try {
-                    Thread.sleep(syncMillis);
-                } catch (InterruptedException ex) {
-                    logger.error("Error occured", ex);
-                }
-        }
     }
 
 }
